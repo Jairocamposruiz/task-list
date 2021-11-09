@@ -13,7 +13,11 @@ export type TodoContextInterface = {
   filterComplete: boolean;
   todosFiltered: Todo[];
   completeTodos: (text: string) => void;
-  deleteTodos: (text: string) => void;
+  deleteTodos: () => void;
+  openModal: boolean;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  verificationDelete: (text: string) => void;
+  todoForDelete: string;
 }
 
 const TodoContext = createContext<TodoContextInterface | null>(null);
@@ -64,11 +68,16 @@ function TodoProvider(props: TodoProviderProps) {
     saveTodos(newTodos);
   };
 
-  const deleteTodos = (text: string) => {
-    const todoIndex = todos.findIndex((todo) => todo.text === text);
+  const deleteTodos = () => {
+    const todoIndex = todos.findIndex((todo) => todo.text === todoForDelete);
+    
+    if (todoIndex < 0) return;
+    
     const newTodos = [...todos];
     newTodos.splice(todoIndex, 1);
     saveTodos(newTodos);
+
+    setOpenModal(false);
   };
 
   const addTodo = () => {
@@ -86,6 +95,14 @@ function TodoProvider(props: TodoProviderProps) {
     setTodoValue("");
   };
 
+  const [openModal, setOpenModal] = useState(false);
+
+  const [todoForDelete, setTodoForDelete] = useState("");
+
+  const verificationDelete = (text: string) => {
+    setOpenModal(true);
+    setTodoForDelete(text);
+  }
 
 
   const context: TodoContextInterface = {
@@ -101,6 +118,10 @@ function TodoProvider(props: TodoProviderProps) {
     todosFiltered,
     completeTodos,
     deleteTodos,
+    openModal,
+    setOpenModal,
+    verificationDelete,
+    todoForDelete
   }
 
 

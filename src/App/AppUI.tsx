@@ -7,9 +7,12 @@ import TodoList from "../components/TodoList";
 import TodoSearch from "../components/TodoSearch";
 import CreateTodoInput from "../components/CreateTodoInput";
 
-export type Todo = { text: string; completed: boolean };
+import Modal from "../Modal";
+import { useTodoContext } from "../hooks/useTodoContext";
 
 function AppUI() {
+
+  const { openModal, setOpenModal, deleteTodos, todoForDelete } = useTodoContext();
  
   return (
     <div className="App">
@@ -24,6 +27,17 @@ function AppUI() {
         <TodoCounter />
         <TodoSearch />
         <TodoList />
+
+        {openModal && (
+          <Modal>
+            <h1>Are you sore to delete the task?</h1>
+            <p>{todoForDelete}</p>
+            <div className="inLineButtons">
+              <button className="button" onClick={() => deleteTodos()}>Yes</button>
+              <button className="button" onClick={() => setOpenModal(!openModal)}>No</button>
+            </div>
+          </Modal>
+        )}
       </div>
     </div>
   );
