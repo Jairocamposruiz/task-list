@@ -1,7 +1,9 @@
-type CreateTodoButtonProps = {};
+import { useTodoContext } from "../hooks/useTodoContext";
 
-export default function CreateTodoButton(props: CreateTodoButtonProps) {
+export default function CreateTodoButton() {
+  const {addTodo} = useTodoContext();
+
   return (
-    <button className="button">Create Task</button>
+    <button onClick={addTodo} className="button">Create Task</button>
   );
 }

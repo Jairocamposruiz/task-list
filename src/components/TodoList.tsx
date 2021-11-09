@@ -1,18 +1,30 @@
-import { Todo } from "../App";
+import { ReactNode } from "react";
+import { useTodoContext } from "../hooks/useTodoContext";
 import TodoItem from "./TodoItem";
 
 type TodoListProps = {
-  items: Todo[],
+  children?: ReactNode
 };
 
-export default function TodoList(props: TodoListProps) {
+function TodoList({children}: TodoListProps) {
+  const {completeTodos, todosFiltered, deleteTodos} = useTodoContext();
+
   return (
     <section>
+      {children}
       <ul>
-        {props.items.map(item => (
-          <TodoItem key={item.text} text={item.text} completed={item.completed} />
+        {todosFiltered.map(item => (
+          <TodoItem 
+            key={item.text} 
+            item={item} 
+            onComplete={completeTodos} 
+            onDelete={deleteTodos} 
+          />
         ))}
       </ul>  
     </section>
   );
 }
+
+
+export default TodoList;

@@ -1,11 +1,18 @@
-import { Todo } from "../App";
+import { Todo } from "../types";
 
-export default function TodoItem(props: Todo) {
+type TodoItemProps = {
+  item: Todo,
+  onComplete: (text: string) => void
+  onDelete: (text: string) => void
+}
+
+export default function TodoItem({item, onComplete, onDelete}: TodoItemProps) {
+
   return (
-    <li className={props.completed ?"completed" :""} >
-      <div className={`checkbox`}>{props.completed ?"✔" :""}</div>
-      <p>{props.text}</p>
-      <button className="delete">X</button>
+    <li className={item.completed ?"completed" :""} >
+      <button onClick={() => onComplete(item.text)} className={`checkbox`}>{item.completed ?"✔" :""}</button>
+      <p>{item.text}</p>
+      <button onClick={() => onDelete(item.text)} className="delete">X</button>
     </li>
   );
 }
